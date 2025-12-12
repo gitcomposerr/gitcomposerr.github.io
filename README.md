@@ -1,375 +1,190 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Deep Neural Network: Negative Feedback</title>
+    <title>Childhood Impact</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
     <style>
+        :root {
+            --primary-dark: #1a202c;
+            --secondary-light: #f7fafc;
+            --accent-gold: #d6bcfa;
+        }
         body {
-            background-color: #121212;
-            color: #e0e0e0;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
+            font-family: 'Lato', sans-serif;
+            overflow-x: hidden;
+            background-color: var(--primary-dark);
+            color: var(--secondary-light);
             margin: 0;
-            padding: 20px;
+            padding: 0;
         }
-
-        h1 { margin-bottom: 5px; font-weight: 300; letter-spacing: 1px; }
-        .subtitle { color: #777; font-size: 0.9em; margin-bottom: 20px; }
+        h1, h2, h3 {
+            font-family: 'Playfair Display', serif;
+        }
         
-        .container {
-            position: relative;
-            box-shadow: 0 0 30px rgba(0,0,0,0.6);
-            border-radius: 8px;
-            overflow: hidden;
-            background: #1e1e1e;
+        /* Smooth Scrolling Container */
+        .scroll-container {
+            height: 100vh;
+            overflow-y: scroll;
+            scroll-snap-type: y mandatory;
+            scroll-behavior: smooth;
         }
 
-        canvas { display: block; }
-
-        .controls {
-            margin-top: 20px;
-            display: flex;
-            gap: 40px;
-            background: #252525;
-            padding: 20px 40px;
-            border-radius: 8px;
-        }
-
-        .control-group {
+        .section {
+            height: 100vh;
+            width: 100%;
+            scroll-snap-align: start;
             display: flex;
             flex-direction: column;
+            justify-content: center;
             align-items: center;
-        }
-
-        label { margin-bottom: 8px; font-size: 0.85em; color: #bbb; text-transform: uppercase; letter-spacing: 1px;}
-
-        input[type=range] {
-            -webkit-appearance: none;
-            width: 180px;
-            height: 4px;
-            background: #444;
-            border-radius: 2px;
-            outline: none;
-        }
-
-        input[type=range]::-webkit-slider-thumb {
-            -webkit-appearance: none;
-            width: 16px;
-            height: 16px;
-            background: #00bcd4;
-            border-radius: 50%;
-            cursor: pointer;
-            transition: transform .1s;
+            position: relative;
+            padding: 2rem;
+            box-sizing: border-box;
+            opacity: 0;
+            transform: translateY(50px) scale(0.95);
+            transition: opacity 1.2s ease-out, transform 1.2s cubic-bezier(0.22, 1, 0.36, 1);
         }
         
-        input[type=range]:active::-webkit-slider-thumb { transform: scale(1.2); }
-        input[type=range].red-slider::-webkit-slider-thumb { background: #ff5252; }
+        .section.visible {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .animate-fade-in-up {
+            animation: fadeInUp 1.2s ease-out forwards;
+        }
+
+        .delay-100 { animation-delay: 0.2s; opacity: 0; animation-fill-mode: forwards; }
+        .delay-300 { animation-delay: 0.6s; opacity: 0; animation-fill-mode: forwards; }
+        .delay-500 { animation-delay: 1.0s; opacity: 0; animation-fill-mode: forwards; }
+
+        /* Scroll Indicator */
+        .scroll-indicator {
+            position: absolute;
+            bottom: 40px;
+            left: 50%;
+            transform: translateX(-50%);
+            animation: bounce 2s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% {transform: translateX(-50%) translateY(0);}
+            40% {transform: translateX(-50%) translateY(-10px);}
+            60% {transform: translateX(-50%) translateY(-5px);}
+        }
     </style>
 </head>
 <body>
 
-    <h1>Deep Negative Feedback</h1>
-    <div class="subtitle">Input Layer &rarr; Hidden Layer &rarr; Output Layer (with Feedback)</div>
+    <div class="scroll-container">
+        <!-- Page 1: Title -->
+        <section class="section visible bg-gray-900 text-white" id="home">
+            <div class="max-w-4xl text-center z-10">
+                <h1 class="text-5xl md:text-7xl font-bold mb-6 tracking-tight animate-fade-in-up delay-100 leading-tight">
+                    Childhood effect on <br/>
+                    <span class="text-indigo-400 italic">decision making</span> <br/>
+                    and behavior
+                </h1>
+                <p class="text-xl md:text-2xl text-gray-300 font-light max-w-2xl mx-auto animate-fade-in-up delay-300">
+                    Made by <span class="text-indigo-400 font-normal">Victor Kanochkin</span>
+                </p>
+            </div>
+            
+            <!-- Background Decoration -->
+            <div class="absolute inset-0 overflow-hidden pointer-events-none">
+                <div class="absolute top-1/4 left-1/4 w-64 h-64 bg-indigo-600 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-pulse"></div>
+                <div class="absolute bottom-1/4 right-1/4 w-96 h-96 bg-purple-600 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-pulse" style="animation-duration: 4s;"></div>
+            </div>
 
-    <div class="container">
-        <canvas id="netCanvas" width="900" height="500"></canvas>
-    </div>
+            <div class="scroll-indicator animate-fade-in-up delay-500">
+                <svg class="w-8 h-8 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path>
+                </svg>
+            </div>
+        </section>
 
-    <div class="controls">
-        <div class="control-group">
-            <label>Input Signal</label>
-            <input type="range" id="inputSlider" min="0" max="100" value="0">
-        </div>
-        <div class="control-group">
-            <label>Feedback (Inhibition)</label>
-            <input type="range" id="feedbackSlider" class="red-slider" min="0" max="100" value="50">
-        </div>
+        <!-- Page 2: Homeostasis -->
+        <section class="section bg-gray-900 text-white" id="homeostasis">
+            <div class="max-w-6xl w-full mx-auto grid grid-cols-1 md:grid-cols-2 gap-12 items-center px-6">
+                <!-- Left Side: Content -->
+                <div class="text-left z-10">
+                    <h2 class="text-3xl md:text-5xl font-bold mb-8 tracking-tight leading-tight text-indigo-100 font-serif">
+                        What is homeostasis and how does it affect our behaviors?
+                    </h2>
+                    <p class="text-lg md:text-xl text-gray-300 font-light leading-relaxed border-l-4 border-indigo-500 pl-6">
+                        Homeostasis is the self-regulating process by which biological organisms maintain stability while adjusting to conditions that are optimal for survival
+                    </p>
+                    
+                    <div class="mt-8 bg-gray-800 bg-opacity-50 p-6 rounded-lg border-l-4 border-purple-500 backdrop-blur-sm transform transition-all hover:translate-x-2 duration-300 shadow-xl">
+                        <p class="text-lg text-gray-300">
+                            Organisms maintain homeostasis through <span class="text-indigo-300 font-semibold">positive</span> and <span class="text-indigo-300 font-semibold">negative</span> feedback loops.
+                        </p>
+                    </div>
+                </div>
+                
+                <!-- Right Side: Open for now -->
+                <div class="hidden md:block">
+                    <!-- Reserved for future content -->
+                </div>
+            </div>
+        </section>
+
+        <!-- Page 3: Relevance -->
+        <section class="section bg-gray-900 text-white" id="relevance">
+            <div class="max-w-6xl w-full mx-auto px-6 z-10 flex flex-col items-center justify-center h-full">
+                <h2 class="text-3xl md:text-5xl font-bold mb-12 tracking-tight leading-tight text-indigo-100 font-serif text-center max-w-4xl">
+                    How is homeostasis relevant to childhood trauma and predispositions to mental disorders?
+                </h2>
+                <!-- Placeholder for content -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 w-full max-w-5xl">
+                    <!-- Left and Right placeholders or content will go here -->
+                </div>
+            </div>
+            
+            <!-- Background Decoration -->
+            <div class="absolute inset-0 overflow-hidden pointer-events-none">
+                <div class="absolute top-1/3 right-1/4 w-80 h-80 bg-blue-900 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-pulse"></div>
+                <div class="absolute bottom-1/3 left-1/4 w-64 h-64 bg-purple-900 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-pulse" style="animation-duration: 6s;"></div>
+            </div>
+        </section>
     </div>
 
     <script>
-        const canvas = document.getElementById('netCanvas');
-        const ctx = canvas.getContext('2d');
-        const inputSlider = document.getElementById('inputSlider');
-        const feedbackSlider = document.getElementById('feedbackSlider');
-
-        // --- Configuration ---
-        const particles = [];
-        const maxGraphPoints = 200;
-        const graphData = { output: [], hiddenAvg: [] };
-        
-        // Physics Params
-        let inputStrength = 0;
-        let feedbackWeight = 0.5;
-        const reactionSpeed = 0.08;
-
-        // --- Layer Definitions ---
-        // We calculate positions dynamically based on canvas size
-        const layers = {
-            input: [
-                { x: 100, y: 150, val: 0, label: "I1" },
-                { x: 100, y: 350, val: 0, label: "I2" }
-            ],
-            hidden: [
-                { x: 450, y: 100, val: 0, label: "H1" },
-                { x: 450, y: 250, val: 0, label: "H2" },
-                { x: 450, y: 400, val: 0, label: "H3" }
-            ],
-            output: [
-                { x: 800, y: 250, val: 0, label: "Out" }
-            ]
-        };
-
-        // Inputs
-        inputSlider.addEventListener('input', (e) => inputStrength = e.target.value / 100);
-        feedbackSlider.addEventListener('input', (e) => feedbackWeight = e.target.value / 100);
-
-        // --- Particle System ---
-        function spawnParticle(start, end, type) {
-            // "Less quantiful": High threshold for spawning
-            // We only spawn if source value is high enough
-            if (Math.random() > 0.95) return; // Only 5% chance per frame
+        // Intersection Observer for future sections
+        document.addEventListener('DOMContentLoaded', () => {
+            const sections = document.querySelectorAll('.section');
             
-            particles.push({
-                x: start.x,
-                y: start.y,
-                startX: start.x,
-                startY: start.y,
-                targetX: end.x,
-                targetY: end.y,
-                progress: 0,
-                // Speed varies slightly for organic look
-                speed: 0.015 + (Math.random() * 0.01), 
-                type: type // 'excite' or 'inhibit'
-            });
-        }
-
-        function updatePhysics() {
-            // 1. INPUT LAYER
-            // Simply adopts the slider value
-            layers.input.forEach(node => {
-                let target = inputStrength;
-                node.val += (target - node.val) * reactionSpeed;
-            });
-
-            // 2. HIDDEN LAYER
-            // Sum of inputs MINUS feedback from output
-            let feedbackSignal = layers.output[0].val * feedbackWeight * 2.5;
-            
-            layers.hidden.forEach(hNode => {
-                let incomingExcite = 0;
-                // Sum inputs
-                layers.input.forEach(iNode => incomingExcite += iNode.val);
-                // Average inputs slightly so it doesn't explode
-                incomingExcite = incomingExcite / 1.5; 
-
-                // The Logic: Excitation - Inhibition
-                let target = incomingExcite - feedbackSignal;
-                if(target < 0) target = 0; // Rectified Linear Unit logic (ReLU-ish)
-
-                hNode.val += (target - hNode.val) * reactionSpeed;
-
-                // Spawn forward particles
-                if(hNode.val > 0.1 && Math.random() < 0.05) {
-                   spawnParticle(hNode, layers.output[0], 'excite');
-                }
-            });
-
-            // 3. OUTPUT LAYER
-            // Sum of hidden nodes
-            let oNode = layers.output[0];
-            let incomingHidden = 0;
-            layers.hidden.forEach(hNode => incomingHidden += hNode.val);
-            
-            let oTarget = incomingHidden / 2.0; // Scale down slightly
-            oNode.val += (oTarget - oNode.val) * reactionSpeed;
-
-            // Spawn feedback particles (Output -> Hidden)
-            if(oNode.val > 0.1 && feedbackWeight > 0.05) {
-                // Randomly pick a hidden node to visualize sending feedback to
-                let targetHidden = layers.hidden[Math.floor(Math.random() * layers.hidden.length)];
-                // Even lower chance for feedback particles to keep visual clean
-                if(Math.random() < 0.03) spawnParticle(oNode, targetHidden, 'inhibit');
-            }
-
-            // Spawn Input -> Hidden particles
-            layers.input.forEach(iNode => {
-                if(iNode.val > 0.1) {
-                    let targetHidden = layers.hidden[Math.floor(Math.random() * layers.hidden.length)];
-                    if(Math.random() < 0.03) spawnParticle(iNode, targetHidden, 'excite');
-                }
-            });
-
-            // 4. PARTICLES
-            for (let i = particles.length - 1; i >= 0; i--) {
-                let p = particles[i];
-                p.progress += p.speed;
-
-                if (p.type === 'inhibit') {
-                    // Curved path for feedback (Arcing up or down)
-                    // Determine arc height based on Y distance
-                    let midX = (p.startX + p.targetX) / 2;
-                    let arcHeight = 150; 
-                    // Flip arc if going to top or bottom nodes for visual spread
-                    if(p.targetY < 250) arcHeight = -150;
-                    
-                    let midY = (p.startY + p.targetY) / 2 + arcHeight;
-                    
-                    let t = p.progress;
-                    // Quadratic Bezier
-                    p.x = (1-t)*(1-t)*p.startX + 2*(1-t)*t*midX + t*t*p.targetX;
-                    p.y = (1-t)*(1-t)*p.startY + 2*(1-t)*t*midY + t*t*p.targetY;
-                } else {
-                    // Linear path for excitation
-                    p.x = p.startX + (p.targetX - p.startX) * p.progress;
-                    p.y = p.startY + (p.targetY - p.startY) * p.progress;
-                }
-
-                if (p.progress >= 1) particles.splice(i, 1);
-            }
-
-            // 5. GRAPH DATA
-            graphData.output.push(oNode.val);
-            // Calculate average hidden activation
-            let avgH = layers.hidden.reduce((acc, n) => acc + n.val, 0) / layers.hidden.length;
-            graphData.hiddenAvg.push(avgH);
-            
-            if(graphData.output.length > maxGraphPoints) {
-                graphData.output.shift();
-                graphData.hiddenAvg.shift();
-            }
-        }
-
-        // --- Drawing ---
-
-        function drawWire(start, end, type) {
-            ctx.beginPath();
-            if (type === 'inhibit') {
-                ctx.strokeStyle = `rgba(255, 82, 82, ${0.1 + (feedbackWeight * 0.3)})`;
-                ctx.lineWidth = 1 + (feedbackWeight * 2);
-                
-                // Curve calculation matches particle logic
-                let midX = (start.x + end.x) / 2;
-                let arcHeight = 150;
-                if(end.y < 250) arcHeight = -150;
-                let midY = (start.y + end.y) / 2 + arcHeight;
-                
-                ctx.moveTo(start.x, start.y);
-                ctx.quadraticCurveTo(midX, midY, end.x, end.y);
-            } else {
-                // Forward wires (static opacity)
-                ctx.strokeStyle = 'rgba(0, 188, 212, 0.15)';
-                ctx.lineWidth = 1;
-                ctx.moveTo(start.x, start.y);
-                ctx.lineTo(end.x, end.y);
-            }
-            ctx.stroke();
-        }
-
-        function drawNode(node, color) {
-            // Node Glow
-            let activation = Math.min(node.val, 1.5); // Cap for visual
-            let glowRadius = 10 + (activation * 20);
-            
-            let gradient = ctx.createRadialGradient(node.x, node.y, 8, node.x, node.y, glowRadius);
-            gradient.addColorStop(0, color);
-            gradient.addColorStop(1, 'rgba(0,0,0,0)');
-            
-            ctx.fillStyle = gradient;
-            ctx.globalAlpha = 0.4 + (activation * 0.4);
-            ctx.beginPath();
-            ctx.arc(node.x, node.y, glowRadius, 0, Math.PI * 2);
-            ctx.fill();
-            ctx.globalAlpha = 1;
-
-            // Node Body
-            ctx.beginPath();
-            ctx.arc(node.x, node.y, 12, 0, Math.PI * 2);
-            ctx.fillStyle = '#222';
-            ctx.strokeStyle = color;
-            ctx.lineWidth = 2;
-            ctx.fill();
-            ctx.stroke();
-        }
-
-        function drawGraph() {
-            const h = 80;
-            const w = 200;
-            const x = 20;
-            const y = canvas.height - h - 20;
-
-            // BG
-            ctx.fillStyle = "rgba(0,0,0,0.5)";
-            ctx.fillRect(x, y, w, h);
-            ctx.strokeStyle = "#555";
-            ctx.strokeRect(x, y, w, h);
-
-            // Helper
-            const drawLine = (data, color) => {
-                ctx.beginPath();
-                ctx.strokeStyle = color;
-                ctx.lineWidth = 2;
-                let step = w / maxGraphPoints;
-                data.forEach((val, i) => {
-                    let plotY = (y + h) - (Math.min(val, 1.5) / 1.5 * h);
-                    if(i===0) ctx.moveTo(x + i*step, plotY);
-                    else ctx.lineTo(x + i*step, plotY);
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                    }
                 });
-                ctx.stroke();
-            }
-
-            drawLine(graphData.hiddenAvg, '#b388ff'); // Purple
-            drawLine(graphData.output, '#8bc34a');   // Green
-            
-            ctx.font = "10px sans-serif";
-            ctx.fillStyle = "#ccc";
-            ctx.fillText("Live Activity", x+5, y-5);
-        }
-
-        function animate() {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            
-            updatePhysics();
-
-            // 1. Draw Wires
-            // Input -> Hidden
-            layers.input.forEach(i => {
-                layers.hidden.forEach(h => drawWire(i, h, 'excite'));
-            });
-            // Hidden -> Output
-            layers.hidden.forEach(h => {
-                layers.output.forEach(o => drawWire(h, o, 'excite'));
-            });
-            // Output -> Hidden (Feedback)
-            layers.output.forEach(o => {
-                layers.hidden.forEach(h => drawWire(o, h, 'inhibit'));
+            }, {
+                threshold: 0.1
             });
 
-            // 2. Draw Particles
-            particles.forEach(p => {
-                ctx.beginPath();
-                ctx.fillStyle = p.type === 'inhibit' ? '#ff5252' : '#00bcd4';
-                // Small size radius 2
-                ctx.arc(p.x, p.y, 2, 0, Math.PI*2);
-                ctx.fill();
+            sections.forEach(section => {
+                observer.observe(section);
             });
-
-            // 3. Draw Nodes
-            layers.input.forEach(n => drawNode(n, '#00bcd4')); // Cyan
-            layers.hidden.forEach(n => drawNode(n, '#b388ff')); // Purple
-            layers.output.forEach(n => drawNode(n, '#8bc34a')); // Green
-
-            // 4. Draw Graph
-            drawGraph();
-
-            requestAnimationFrame(animate);
-        }
-
-        animate();
-
+        });
     </script>
 </body>
 </html>
